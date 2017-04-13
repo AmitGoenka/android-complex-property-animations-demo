@@ -9,17 +9,16 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 public class SkylinePropertyAnimationActivity extends AppCompatActivity {
+
     private ImageView ivWheel;
     private ImageView ivSun;
     private RelativeLayout rlSkyLayout;
@@ -27,6 +26,9 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
     private ImageView ivCloud2;
     private ImageView ivBird;
     private int ANIMATION_DURATION = 3000;
+
+    private String BG_START_COLOR = "#66ccff";
+    private String BG_END_COLOR = "#006699";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +61,7 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
 
     public void animateWheel() {
         //load the wheel animation
-        AnimatorSet wheelSet = (AnimatorSet)
-                AnimatorInflater.loadAnimator(this,
-                        R.animator.wheel_spin);
+        AnimatorSet wheelSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.wheel_spin);
         //set the view as target
         wheelSet.setTarget(ivWheel);
         //start the animation
@@ -70,9 +70,7 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
 
     public void animateSun() {
         //load the sun movement animation
-        AnimatorSet sunSet = (AnimatorSet)
-                AnimatorInflater.loadAnimator(this,
-                        R.animator.sun_swing);
+        AnimatorSet sunSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.sun_swing);
         //set the view as target
         sunSet.setTarget(ivSun);
         //start the animation
@@ -81,10 +79,7 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
 
     public void darkenSky() {
         //darken sky
-        ValueAnimator skyAnim =
-                ObjectAnimator.ofInt(rlSkyLayout, "backgroundColor",
-                        Color.parseColor("#66ccff"),
-                        Color.parseColor("#006699"));
+        ValueAnimator skyAnim = ObjectAnimator.ofInt(rlSkyLayout, "backgroundColor", Color.parseColor(BG_START_COLOR), Color.parseColor(BG_END_COLOR));
         skyAnim.setDuration(ANIMATION_DURATION);
         skyAnim.setRepeatCount(ValueAnimator.INFINITE);
         skyAnim.setRepeatMode(ValueAnimator.REVERSE);
@@ -92,27 +87,25 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
         skyAnim.start();
     }
 
-
     public void moveClouds() {
         //move clouds
-        ObjectAnimator cloudAnim =
-                ObjectAnimator.ofFloat(ivCloud1, View.X, -350);
+        ObjectAnimator cloudAnim = ObjectAnimator.ofFloat(ivCloud1, View.X, -350);
         cloudAnim.setDuration(ANIMATION_DURATION);
         cloudAnim.setRepeatCount(ValueAnimator.INFINITE);
         cloudAnim.setRepeatMode(ValueAnimator.REVERSE);
         cloudAnim.start();
         // other cloud
-        AnimatorSet cloud2Set = new AnimatorSet();
-        ObjectAnimator cloudXAnim2 =
-                ObjectAnimator.ofFloat(ivCloud2, View.X, -300);
+        ObjectAnimator cloudXAnim2 = ObjectAnimator.ofFloat(ivCloud2, View.X, -300);
         cloudXAnim2.setDuration(ANIMATION_DURATION);
         cloudXAnim2.setRepeatCount(ValueAnimator.INFINITE);
         cloudXAnim2.setRepeatMode(ValueAnimator.REVERSE);
-        ObjectAnimator cloudYAnim2 =
-                ObjectAnimator.ofFloat(ivCloud2, View.TRANSLATION_Y, -200);
+
+        ObjectAnimator cloudYAnim2 = ObjectAnimator.ofFloat(ivCloud2, View.TRANSLATION_Y, -200);
         cloudYAnim2.setDuration(ANIMATION_DURATION);
         cloudYAnim2.setRepeatCount(ValueAnimator.INFINITE);
         cloudYAnim2.setRepeatMode(ValueAnimator.REVERSE);
+
+        AnimatorSet cloud2Set = new AnimatorSet();
         cloud2Set.playSequentially(cloudXAnim2, cloudYAnim2);
         cloud2Set.start();
     }
@@ -136,11 +129,9 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
     }
 
     private void animateActionBar() {
-        int colorFrom = Color.parseColor("#66ccff");
-        int colorTo = Color.parseColor("#006699");
-        ValueAnimator actionBarColorAnim =
-                ValueAnimator.ofObject(new ArgbEvaluator(),
-                        colorFrom, colorTo);
+        int colorFrom = Color.parseColor(BG_START_COLOR);
+        int colorTo = Color.parseColor(BG_END_COLOR);
+        ValueAnimator actionBarColorAnim = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
         actionBarColorAnim.setDuration(ANIMATION_DURATION); // milliseconds
         actionBarColorAnim.setRepeatCount(ValueAnimator.INFINITE);
         actionBarColorAnim.setRepeatMode(ValueAnimator.REVERSE);
@@ -148,11 +139,8 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
                 new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animator) {
-                        getSupportActionBar().
-                                setBackgroundDrawable(new ColorDrawable((int)
-                                        animator.getAnimatedValue()));
+                        getSupportActionBar().setBackgroundDrawable(new ColorDrawable((int) animator.getAnimatedValue()));
                     }
-
                 });
         actionBarColorAnim.start();
     }
