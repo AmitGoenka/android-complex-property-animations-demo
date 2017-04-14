@@ -74,4 +74,9 @@
         android:padding="3dp"
         android:src="@drawable/steering_wheel"/>
 
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </RelativeLayout>

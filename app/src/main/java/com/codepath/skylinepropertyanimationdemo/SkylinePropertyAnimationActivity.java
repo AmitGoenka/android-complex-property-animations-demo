@@ -49,6 +49,15 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
         darkenSky();
         // Transition action bar
         animateActionBar();
+
+        // Set up Explode Animation Fragment
+        setupExplodeAnimationFragment();
+    }
+
+    private void setupExplodeAnimationFragment() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, ExplodeAnimationFragment.newInstance(), "EXPLODE")
+                .commit();
     }
 
     private void setupViews() {
