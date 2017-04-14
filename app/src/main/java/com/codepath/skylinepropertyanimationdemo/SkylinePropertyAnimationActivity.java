@@ -19,14 +19,15 @@ import android.widget.RelativeLayout;
 
 public class SkylinePropertyAnimationActivity extends AppCompatActivity {
 
-    private ImageView ivWheel;
-    private ImageView ivSun;
     private RelativeLayout rlSkyLayout;
+    private ImageView ivSun;
     private ImageView ivCloud1;
     private ImageView ivCloud2;
     private ImageView ivBird;
-    private int ANIMATION_DURATION = 3000;
+    private ImageView ivWheel;
+    private ImageView ivWindow;
 
+    private int ANIMATION_DURATION = 3000;
     private String BG_START_COLOR = "#66ccff";
     private String BG_END_COLOR = "#006699";
 
@@ -40,12 +41,12 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
         animateWheel();
         // Animate the sun in sky
         animateSun();
-        // Darken sky between day and night
-        darkenSky();
         // Move clouds around
         moveClouds();
         // Animate bird
         animateBird();
+        // Darken sky between day and night
+        darkenSky();
         // Transition action bar
         animateActionBar();
     }
@@ -57,6 +58,7 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
         ivCloud1 = (ImageView) findViewById(R.id.ivCloud1);
         ivCloud2 = (ImageView) findViewById(R.id.ivCloud2);
         ivBird = (ImageView) findViewById(R.id.ivBird);
+        ivWindow = (ImageView) findViewById(R.id.window);
     }
 
     public void animateWheel() {
