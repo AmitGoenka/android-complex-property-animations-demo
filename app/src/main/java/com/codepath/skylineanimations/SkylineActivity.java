@@ -1,4 +1,4 @@
-package com.codepath.skylinepropertyanimationdemo;
+package com.codepath.skylineanimations;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -8,16 +8,27 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Transition;
+import android.transition.TransitionManager;
+import android.transition.TransitionSet;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-public class SkylinePropertyAnimationActivity extends AppCompatActivity {
+public class SkylineActivity extends AppCompatActivity implements StarsAdapter.StarsListener {
 
     private RelativeLayout rlSkyLayout;
     private ImageView ivSun;
@@ -25,7 +36,7 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
     private ImageView ivCloud2;
     private ImageView ivBird;
     private ImageView ivWheel;
-    private ImageView ivWindow;
+    private RecyclerView rvStars;
 
     private int ANIMATION_DURATION = 3000;
     private String BG_START_COLOR = "#66ccff";
@@ -49,15 +60,13 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
         darkenSky();
         // Transition action bar
         animateActionBar();
-
-        // Set up Explode Animation Fragment
-        setupExplodeAnimationFragment();
+        // Set up and Animate Stars
+        animateStars();
     }
 
-    private void setupExplodeAnimationFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, ExplodeAnimationFragment.newInstance(), "EXPLODE")
-                .commit();
+    private void animateStars() {
+        rvStars.setLayoutManager(new GridLayoutManager(this, 16));
+        rvStars.setAdapter(new StarsAdapter(this, 32, this, getStarsAnimation()));
     }
 
     private void setupViews() {
@@ -67,7 +76,7 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
         ivCloud1 = (ImageView) findViewById(R.id.ivCloud1);
         ivCloud2 = (ImageView) findViewById(R.id.ivCloud2);
         ivBird = (ImageView) findViewById(R.id.ivBird);
-        ivWindow = (ImageView) findViewById(R.id.window);
+        rvStars = (RecyclerView) findViewById(R.id.rvStars);
     }
 
     public void animateWheel() {
@@ -86,16 +95,6 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
         sunSet.setTarget(ivSun);
         //start the animation
         sunSet.start();
-    }
-
-    public void darkenSky() {
-        //darken sky
-        ValueAnimator skyAnim = ObjectAnimator.ofInt(rlSkyLayout, "backgroundColor", Color.parseColor(BG_START_COLOR), Color.parseColor(BG_END_COLOR));
-        skyAnim.setDuration(ANIMATION_DURATION);
-        skyAnim.setRepeatCount(ValueAnimator.INFINITE);
-        skyAnim.setRepeatMode(ValueAnimator.REVERSE);
-        skyAnim.setEvaluator(new ArgbEvaluator());
-        skyAnim.start();
     }
 
     public void moveClouds() {
@@ -139,6 +138,16 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
                 }).start();
     }
 
+    public void darkenSky() {
+        //darken sky
+        ValueAnimator skyAnim = ObjectAnimator.ofInt(rlSkyLayout, "backgroundColor", Color.parseColor(BG_START_COLOR), Color.parseColor(BG_END_COLOR));
+        skyAnim.setDuration(ANIMATION_DURATION);
+        skyAnim.setRepeatCount(ValueAnimator.INFINITE);
+        skyAnim.setRepeatMode(ValueAnimator.REVERSE);
+        skyAnim.setEvaluator(new ArgbEvaluator());
+        skyAnim.start();
+    }
+
     private void animateActionBar() {
         int colorFrom = Color.parseColor(BG_START_COLOR);
         int colorTo = Color.parseColor(BG_END_COLOR);
@@ -150,10 +159,52 @@ public class SkylinePropertyAnimationActivity extends AppCompatActivity {
                 new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animator) {
-                        getSupportActionBar().setBackgroundDrawable(new ColorDrawable((int) animator.getAnimatedValue()));
+                        if (getSupportActionBar() != null) {
+                            getSupportActionBar().setBackgroundDrawable(new ColorDrawable((int) animator.getAnimatedValue()));
+                        }
                     }
                 });
         actionBarColorAnim.start();
     }
 
+
+    private Animation getStarsAnimation() {
+        final Animation animation = new AlphaAnimation(0, 1);
+        animation.setDuration(3000);
+        animation.setInterpolator(new AccelerateInterpolator());
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.REVERSE);
+        return animation;
+    }
+
+    @Override
+    public void onClickStars(View v) {
+        TransitionManager.beginDelayedTransition(rlSkyLayout, getStarsTransition(v));
+        rvStars.setAdapter(null);
+    }
+
+    private TransitionSet getStarsTransition(final View v) {
+        final Rect rect = new Rect();
+        v.getGlobalVisibleRect(rect);
+
+        // Get Explode Transition
+        Transition explode = new Explode();
+        // For Explode Transition, use the clicked view bounds as the epi-center
+        explode.setEpicenterCallback(new Transition.EpicenterCallback() {
+            @Override
+            public Rect onGetEpicenter(Transition transition) {
+                return rect;
+            }
+        });
+        // Keep the current view from exploding
+        explode.excludeTarget(v, true);
+
+        Transition fade = new Fade().addTarget(v);
+
+        return new TransitionSet()
+                .addTransition(explode)
+                .addTransition(fade)
+                .setDuration(1000)
+                .setInterpolator(new AccelerateDecelerateInterpolator());
+    }
 }

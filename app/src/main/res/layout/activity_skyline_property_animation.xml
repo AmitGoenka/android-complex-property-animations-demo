@@ -7,15 +7,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#66ccff"
-    tools:context=".SkylinePropertyAnimationActivity">
+    tools:context=".SkylineActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvStars"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"/>
 
     <ImageView
         android:id="@+id/ivSun"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/sun"
+        android:paddingEnd="0dp"
         android:paddingStart="100dp"
-        android:paddingTop="45dp"
+        android:paddingTop="65dp"
         android:src="@drawable/sun"/>
 
     <ImageView
@@ -23,8 +30,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/cloud"
+        android:paddingEnd="0dp"
         android:paddingStart="170dp"
-        android:paddingTop="70dp"
+        android:paddingTop="90dp"
         android:src="@drawable/cloud"/>
 
     <ImageView
@@ -32,8 +40,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/cloud"
+        android:paddingEnd="0dp"
         android:paddingStart="200dp"
-        android:paddingTop="120dp"
+        android:paddingTop="140dp"
         android:src="@drawable/cloud"/>
 
     <ImageView
@@ -42,8 +51,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:contentDescription="@string/bird"
-        android:paddingStart="0dp"
-        android:paddingTop="100dp"
+        android:paddingTop="120dp"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/bird"/>
 
