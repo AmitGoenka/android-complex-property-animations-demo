@@ -23,8 +23,6 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -60,13 +58,6 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
         darkenSky();
         // Transition action bar
         animateActionBar();
-        // Set up and Animate Stars
-        animateStars();
-    }
-
-    private void animateStars() {
-        rvStars.setLayoutManager(new GridLayoutManager(this, 16));
-        rvStars.setAdapter(new StarsAdapter(this, 32, this, getStarsAnimation()));
     }
 
     private void setupViews() {
@@ -77,6 +68,9 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
         ivCloud2 = (ImageView) findViewById(R.id.ivCloud2);
         ivBird = (ImageView) findViewById(R.id.ivBird);
         rvStars = (RecyclerView) findViewById(R.id.rvStars);
+
+        rvStars.setLayoutManager(new GridLayoutManager(this, 16));
+        rvStars.setAdapter(new StarsAdapter(this, 32, this));
     }
 
     public void animateWheel() {
@@ -121,21 +115,23 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
     }
 
     private void animateBird() {
-        ivBird.setX(-200f);
+        ivBird.setX(-250f);
         // Get screen width
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         // Animate bird off screen to the right
-        ivBird.animate().x(metrics.widthPixels + 50).
-                setStartDelay(1000).
-                setDuration(ANIMATION_DURATION).
-                setInterpolator(new AccelerateInterpolator()).
-                setListener(new AnimatorListenerAdapter() {
+        ivBird.animate()
+                .x(metrics.widthPixels + 50)
+                .setStartDelay(1000)
+                .setDuration(ANIMATION_DURATION)
+                .setInterpolator(new AccelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         animateBird();
                     }
-                }).start();
+                })
+                .start();
     }
 
     public void darkenSky() {
@@ -165,16 +161,6 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
                     }
                 });
         actionBarColorAnim.start();
-    }
-
-
-    private Animation getStarsAnimation() {
-        final Animation animation = new AlphaAnimation(0, 1);
-        animation.setDuration(3000);
-        animation.setInterpolator(new AccelerateInterpolator());
-        animation.setRepeatCount(Animation.INFINITE);
-        animation.setRepeatMode(Animation.REVERSE);
-        return animation;
     }
 
     @Override
