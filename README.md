@@ -23,6 +23,6 @@ Transition Animations illustrated include:
 
 Preview of the app:
 
-<img src="http://imgur.com/a/x98sj" width="400" />
+<img src="http://imgur.com/a/aCG4n" width="400" />
 
 Refer to the [CodePath Animations Guide](http://guides.codepath.com/android/Animations) for further details on property animations and [CodePath View Hierarchy Animations Guide](https://guides.codepath.com/android/View-Hierarchy-Animations) for transition animations. 
