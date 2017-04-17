@@ -21,7 +21,6 @@ import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -84,11 +83,11 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
 
     public void animateSun() {
         //load the sun movement animation
-        AnimatorSet sunSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.sun_swing);
+        Animator sun = AnimatorInflater.loadAnimator(this, R.animator.sun_swing);
         //set the view as target
-        sunSet.setTarget(ivSun);
+        sun.setTarget(ivSun);
         //start the animation
-        sunSet.start();
+        sun.start();
     }
 
     public void moveClouds() {
@@ -136,7 +135,7 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
 
     public void darkenSky() {
         //darken sky
-        ValueAnimator skyAnim = ObjectAnimator.ofInt(rlSkyLayout, "backgroundColor", Color.parseColor(BG_START_COLOR), Color.parseColor(BG_END_COLOR));
+        ObjectAnimator skyAnim = ObjectAnimator.ofInt(rlSkyLayout, "backgroundColor", Color.parseColor(BG_START_COLOR), Color.parseColor(BG_END_COLOR));
         skyAnim.setDuration(ANIMATION_DURATION);
         skyAnim.setRepeatCount(ValueAnimator.INFINITE);
         skyAnim.setRepeatMode(ValueAnimator.REVERSE);
@@ -190,7 +189,7 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
         return new TransitionSet()
                 .addTransition(explode)
                 .addTransition(fade)
-                .setDuration(1000)
-                .setInterpolator(new AccelerateDecelerateInterpolator());
+                .setDuration(2000)
+                .setInterpolator(new AccelerateInterpolator());
     }
 }

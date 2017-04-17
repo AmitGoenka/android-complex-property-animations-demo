@@ -2,6 +2,7 @@ package com.codepath.skylineanimations;
 
 import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
+import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
@@ -13,7 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 
@@ -35,7 +36,7 @@ class StarsAdapter extends RecyclerView.Adapter<StarsAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_explode, parent, false));
+        return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_star, parent, false));
     }
 
     @Override
@@ -69,12 +70,6 @@ class StarsAdapter extends RecyclerView.Adapter<StarsAdapter.ViewHolder> {
     }
 
     private void animateStars(final View v) {
-        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(v, View.ALPHA, 0, 1);
-        alphaAnimator.setInterpolator(new AccelerateInterpolator());
-        alphaAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        alphaAnimator.setRepeatMode(ValueAnimator.REVERSE);
-        alphaAnimator.setDuration(3000);
-
         PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 0.2f, 1);
         PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 0.2f, 1);
         ObjectAnimator scaleAnimator = ObjectAnimator.ofPropertyValuesHolder(v, scaleX, scaleY);
@@ -83,7 +78,18 @@ class StarsAdapter extends RecyclerView.Adapter<StarsAdapter.ViewHolder> {
         scaleAnimator.setRepeatMode(ValueAnimator.REVERSE);
         scaleAnimator.setDuration(100);
 
-        final Drawable starDrawable = getStarDrawable(v);
+        Keyframe kfStart = Keyframe.ofFloat(0f, 0f);
+        Keyframe kfMiddle = Keyframe.ofFloat(0.5f, 0.1f);
+        Keyframe kfLast = Keyframe.ofFloat(1f, 1f);
+        PropertyValuesHolder alphaValues = PropertyValuesHolder.ofKeyframe(View.ALPHA, kfStart, kfMiddle, kfLast);
+
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofPropertyValuesHolder(v, alphaValues);
+        alphaAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        alphaAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        alphaAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        alphaAnimator.setDuration(3000);
+
+        final Drawable starDrawable = ((ImageButton) v).getDrawable();
         ValueAnimator colorAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), Color.WHITE, Color.parseColor("#f9f37b"));
         colorAnimator.setInterpolator(new LinearInterpolator());
         colorAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -106,11 +112,4 @@ class StarsAdapter extends RecyclerView.Adapter<StarsAdapter.ViewHolder> {
         starAnim.start();
     }
 
-    private Drawable getStarDrawable(final View v) {
-        final ImageButton ibStar = (ImageButton) v.findViewById(R.id.btnStar);
-        if (ibStar != null) {
-            return ibStar.getDrawable();
-        }
-        return null;
-    }
 }
