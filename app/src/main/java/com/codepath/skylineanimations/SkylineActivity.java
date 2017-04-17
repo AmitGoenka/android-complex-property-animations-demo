@@ -112,14 +112,12 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
         cloud1Anim.setDuration(ANIMATION_DURATION);
         cloud1Anim.setRepeatCount(ValueAnimator.INFINITE);
         cloud1Anim.setRepeatMode(ValueAnimator.REVERSE);
-        cloud1Anim.start();
 
         // other cloud
         ObjectAnimator cloud2Anim = ObjectAnimator.ofFloat(ivCloud2, View.X, -300);
         cloud2Anim.setDuration(ANIMATION_DURATION);
         cloud2Anim.setRepeatCount(ValueAnimator.INFINITE);
         cloud2Anim.setRepeatMode(ValueAnimator.REVERSE);
-        cloud2Anim.start();
 
         AnimatorSet set = new AnimatorSet();
         set.playTogether(cloud1Anim, cloud2Anim);
