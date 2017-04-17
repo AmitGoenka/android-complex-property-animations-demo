@@ -1,9 +1,11 @@
 <resources>
-	<string name="app_name">SkylinePropertyAnimation</string>
-	<string name="wheel">Steering Wheel</string>
-	<string name="ground">The Ground</string>
-	<string name="window">Window Frame</string>
-	<string name="sun">The Sun</string>
-	<string name="cloud">A Cloud</string>
-	<string name="bird">Bird</string>
+    <string name="app_name">SkylineAnimations</string>
+    <string name="wheel">Steering Wheel</string>
+    <string name="ground">The Ground</string>
+    <string name="window">Window Frame</string>
+    <string name="sun">The Sun</string>
+    <string name="cloud">A Cloud</string>
+    <string name="bird">Bird</string>
+    <string name="art_image">An artistic image</string>
+    <string name="skyline">Skyline</string>
 </resources>

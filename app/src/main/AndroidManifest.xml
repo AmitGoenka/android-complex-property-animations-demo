@@ -8,12 +8,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.codepath.skylineanimations.SkylineActivity">
+        <activity android:name=".SkylineActivity" android:label="@string/skyline">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ArtActivity"
+            android:parentActivityName=".SkylineActivity">
         </activity>
     </application>
 

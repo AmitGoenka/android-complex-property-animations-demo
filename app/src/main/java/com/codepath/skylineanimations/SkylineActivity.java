@@ -7,6 +7,7 @@ import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -42,7 +43,7 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_skyline_property_animation);
+        setContentView(R.layout.activity_skyline);
         // Lookup views
         setupViews();
         // Animate the wheel with rotation
@@ -70,6 +71,14 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
 
         rvStars.setLayoutManager(new GridLayoutManager(this, 16));
         rvStars.setAdapter(new StarsAdapter(this, 32, this));
+
+        ivWheel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SkylineActivity.this, ArtActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void animateWheel() {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clArtLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#AABAD2"
+    tools:context="com.codepath.skylineanimations.ArtActivity">
+
+    <ImageView
+        android:id="@+id/ivArt"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/art_image"
+        android:scaleType="centerCrop"
+        android:src="@drawable/the_girl_with_the_pearl_earring"/>
+
+</android.support.design.widget.CoordinatorLayout>
