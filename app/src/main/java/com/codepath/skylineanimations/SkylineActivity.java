@@ -49,10 +49,10 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
         setContentView(R.layout.activity_skyline);
         // Lookup views
         setupViews();
-        // Animate the wheel with rotation
-        animateWheel();
         // Animate the sun in sky
         animateSun();
+        // Animate the wheel with rotation
+        animateWheel();
         // Move clouds around
         moveClouds();
         // Animate bird
@@ -88,15 +88,6 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
         });
     }
 
-    public void animateWheel() {
-        //load the wheel animation
-        AnimatorSet wheelSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.wheel_spin);
-        //set the view as target
-        wheelSet.setTarget(ivWheel);
-        //start the animation
-        wheelSet.start();
-    }
-
     public void animateSun() {
         //load the sun movement animation
         Animator sun = AnimatorInflater.loadAnimator(this, R.animator.sun_swing);
@@ -106,27 +97,31 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
         sun.start();
     }
 
+    public void animateWheel() {
+        //load the wheel animation
+        AnimatorSet wheelSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.wheel_spin);
+        //set the view as target
+        wheelSet.setTarget(ivWheel);
+        //start the animation
+        wheelSet.start();
+    }
+
     public void moveClouds() {
         //move clouds
-        ObjectAnimator cloudAnim = ObjectAnimator.ofFloat(ivCloud1, View.X, -350);
-        cloudAnim.setDuration(ANIMATION_DURATION);
-        cloudAnim.setRepeatCount(ValueAnimator.INFINITE);
-        cloudAnim.setRepeatMode(ValueAnimator.REVERSE);
-        cloudAnim.start();
+        ObjectAnimator cloud1Anim = ObjectAnimator.ofFloat(ivCloud1, View.X, -350);
+        cloud1Anim.setDuration(ANIMATION_DURATION);
+        cloud1Anim.setRepeatCount(ValueAnimator.INFINITE);
+        cloud1Anim.setRepeatMode(ValueAnimator.REVERSE);
+
         // other cloud
-        ObjectAnimator cloudXAnim2 = ObjectAnimator.ofFloat(ivCloud2, View.X, -300);
-        cloudXAnim2.setDuration(ANIMATION_DURATION);
-        cloudXAnim2.setRepeatCount(ValueAnimator.INFINITE);
-        cloudXAnim2.setRepeatMode(ValueAnimator.REVERSE);
+        ObjectAnimator cloud2Anim = ObjectAnimator.ofFloat(ivCloud2, View.X, -300);
+        cloud1Anim.setDuration(ANIMATION_DURATION);
+        cloud2Anim.setRepeatCount(ValueAnimator.INFINITE);
+        cloud2Anim.setRepeatMode(ValueAnimator.REVERSE);
 
-        ObjectAnimator cloudYAnim2 = ObjectAnimator.ofFloat(ivCloud2, View.TRANSLATION_Y, -200);
-        cloudYAnim2.setDuration(ANIMATION_DURATION);
-        cloudYAnim2.setRepeatCount(ValueAnimator.INFINITE);
-        cloudYAnim2.setRepeatMode(ValueAnimator.REVERSE);
-
-        AnimatorSet cloud2Set = new AnimatorSet();
-        cloud2Set.playSequentially(cloudXAnim2, cloudYAnim2);
-        cloud2Set.start();
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(cloud1Anim, cloud2Anim);
+        set.start();
     }
 
     private void animateBird() {
