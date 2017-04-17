@@ -112,12 +112,14 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
         cloud1Anim.setDuration(ANIMATION_DURATION);
         cloud1Anim.setRepeatCount(ValueAnimator.INFINITE);
         cloud1Anim.setRepeatMode(ValueAnimator.REVERSE);
+        cloud1Anim.start();
 
         // other cloud
         ObjectAnimator cloud2Anim = ObjectAnimator.ofFloat(ivCloud2, View.X, -300);
-        cloud1Anim.setDuration(ANIMATION_DURATION);
+        cloud2Anim.setDuration(ANIMATION_DURATION);
         cloud2Anim.setRepeatCount(ValueAnimator.INFINITE);
         cloud2Anim.setRepeatMode(ValueAnimator.REVERSE);
+        cloud2Anim.start();
 
         AnimatorSet set = new AnimatorSet();
         set.playTogether(cloud1Anim, cloud2Anim);
@@ -175,11 +177,6 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
 
     @Override
     public void onClickStars(View v) {
-        TransitionManager.beginDelayedTransition(rlSkyLayout, getStarsTransition(v));
-        rvStars.setAdapter(null);
-    }
-
-    private TransitionSet getStarsTransition(final View v) {
         final Rect rect = new Rect();
         v.getGlobalVisibleRect(rect);
 
@@ -195,19 +192,22 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
         // Keep the current view from exploding
         explode.excludeTarget(v, true);
 
-        Transition fade = new Fade().addTarget(v);
+        Transition fade = new Fade(Fade.OUT).addTarget(v);
 
-        return new TransitionSet()
+        TransitionSet set = new TransitionSet()
                 .addTransition(explode)
                 .addTransition(fade)
                 .setDuration(2000)
                 .setInterpolator(new AccelerateInterpolator());
+
+        TransitionManager.beginDelayedTransition(rlSkyLayout, set);
+        rvStars.setAdapter(null);
     }
 
     private void setupWindowAnimations() {
         Slide slide = new Slide();
         slide.setSlideEdge(Gravity.START);
-        slide.setDuration(1000);
+        slide.setDuration(500);
         getWindow().setExitTransition(slide);
     }
 }

@@ -5,14 +5,16 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.ChangeBounds;
 import android.transition.ChangeImageTransform;
-import android.transition.Fade;
 import android.transition.Scene;
 import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
 public class ArtActivity extends AppCompatActivity {
@@ -40,15 +42,14 @@ public class ArtActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ChangeImageTransform imageTransform = new ChangeImageTransform();
-                imageTransform.setDuration(1000);
-
                 ChangeBounds changeBounds = new ChangeBounds();
-                changeBounds.setDuration(1000);
 
-                TransitionSet set = new TransitionSet();
-                set.setOrdering(TransitionSet.ORDERING_TOGETHER);
-                set.addTransition(imageTransform);
-                set.addTransition(changeBounds);
+                TransitionSet set = new TransitionSet()
+                        .addTransition(imageTransform)
+                        .addTransition(changeBounds)
+                        .setOrdering(TransitionSet.ORDERING_TOGETHER)
+                        .setDuration(1500)
+                        .setInterpolator(new DecelerateInterpolator());
 
                 TransitionManager.go(new Scene(clArtLayout), set);
 
@@ -85,13 +86,12 @@ public class ArtActivity extends AppCompatActivity {
     }
 
     private void setupWindowAnimations() {
-        Fade fade = new Fade();
-        fade.setDuration(1000);
+        Transition fade = TransitionInflater.from(this).inflateTransition(R.transition.fade_in);
         getWindow().setEnterTransition(fade);
 
         Slide slide = new Slide();
         slide.setSlideEdge(Gravity.END);
-        slide.setDuration(1000);
+        slide.setDuration(500);
         getWindow().setReturnTransition(slide);
     }
 
