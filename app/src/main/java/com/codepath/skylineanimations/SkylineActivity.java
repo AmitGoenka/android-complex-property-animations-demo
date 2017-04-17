@@ -12,15 +12,18 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Explode;
 import android.transition.Fade;
+import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
@@ -58,6 +61,8 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
         darkenSky();
         // Transition action bar
         animateActionBar();
+        // Setup Activity Window Animations
+        setupWindowAnimations();
     }
 
     private void setupViews() {
@@ -73,10 +78,12 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
         rvStars.setAdapter(new StarsAdapter(this, 32, this));
 
         ivWheel.setOnClickListener(new View.OnClickListener() {
+            @SuppressWarnings("unchecked")
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SkylineActivity.this, ArtActivity.class);
-                startActivity(intent);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(SkylineActivity.this);
+                startActivity(intent, options.toBundle());
             }
         });
     }
@@ -200,5 +207,12 @@ public class SkylineActivity extends AppCompatActivity implements StarsAdapter.S
                 .addTransition(fade)
                 .setDuration(2000)
                 .setInterpolator(new AccelerateInterpolator());
+    }
+
+    private void setupWindowAnimations() {
+        Slide slide = new Slide();
+        slide.setSlideEdge(Gravity.START);
+        slide.setDuration(1000);
+        getWindow().setExitTransition(slide);
     }
 }
