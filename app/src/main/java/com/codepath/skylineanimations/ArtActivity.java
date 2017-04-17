@@ -3,18 +3,8 @@ package com.codepath.skylineanimations;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.ChangeBounds;
-import android.transition.ChangeImageTransform;
-import android.transition.Scene;
-import android.transition.Slide;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.transition.TransitionManager;
-import android.transition.TransitionSet;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
 public class ArtActivity extends AppCompatActivity {
@@ -31,7 +21,6 @@ public class ArtActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
         setupViews();
-        setupWindowAnimations();
     }
 
     private void setupViews() {
@@ -41,26 +30,18 @@ public class ArtActivity extends AppCompatActivity {
         ivArt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChangeImageTransform imageTransform = new ChangeImageTransform();
-                ChangeBounds changeBounds = new ChangeBounds();
-
-                TransitionSet set = new TransitionSet()
-                        .addTransition(imageTransform)
-                        .addTransition(changeBounds)
-                        .setOrdering(TransitionSet.ORDERING_TOGETHER)
-                        .setDuration(1500)
-                        .setInterpolator(new DecelerateInterpolator());
-
-                TransitionManager.go(new Scene(clArtLayout), set);
-
-                if (baseHeight == 0) {
-                    baseHeight = ivArt.getHeight();
-                }
-
-                changeImageScale(ivArt);
-                changeImageSize(ivArt, baseHeight);
+                handleImageClick(v);
             }
         });
+    }
+
+    private void handleImageClick(final View v) {
+        if (baseHeight == 0) {
+            baseHeight = v.getHeight();
+        }
+
+        changeImageScale((ImageView) v);
+        changeImageSize(v, baseHeight);
     }
 
     private void changeImageSize(View v, int baseHeight) {
@@ -83,16 +64,6 @@ public class ArtActivity extends AppCompatActivity {
         } else {
             v.setScaleType(ImageView.ScaleType.CENTER);
         }
-    }
-
-    private void setupWindowAnimations() {
-        Transition fade = TransitionInflater.from(this).inflateTransition(R.transition.fade_in);
-        getWindow().setEnterTransition(fade);
-
-        Slide slide = new Slide();
-        slide.setSlideEdge(Gravity.END);
-        slide.setDuration(500);
-        getWindow().setReturnTransition(slide);
     }
 
 }
