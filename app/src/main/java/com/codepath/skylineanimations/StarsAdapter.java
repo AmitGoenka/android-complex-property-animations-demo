@@ -12,6 +12,8 @@ class StarsAdapter extends RecyclerView.Adapter<StarsAdapter.ViewHolder> {
     private int mCount;
     private StarsListener listener;
 
+    private final String STAR_BRIGHT_COLOR = "#f9f37b";
+
     interface StarsListener {
         void onClickStars(View v);
     }
